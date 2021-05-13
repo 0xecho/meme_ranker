@@ -1,9 +1,77 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Meme Ranker - Rank</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.css">
+	<link rel="stylesheet" href="{% static 'css/divider.css' %}">
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script src="{% static 'js/custom.js' %}"></script>
+	<title>Meme-Ranker</title>
 </head>
-<body>
-RANK PAGE :YAAAY:
+<body class="has-background-lightgrey">
+	
+	<div id='app'>
+		<div class="section">
+			<div class="container has-text-centered">
+				<a href="{% url 'top' %}" class="button is-primary is-outlined">Top Memes</a>
+			</div>
+			<div class="is-divider"></div>
+			<div class="columns is-centered has-text-centered">
+				<div class="column is-4">
+					<div class="img_holder">
+						<img v-bind:src="meme1" alt="Meme 1" @click="like">
+					</div>
+				</div>
+				<div class="is-divider-vertical" data-content="Vs."></div>
+				<div class="column is-4">
+					<div class="img_holder">
+						<img v-bind:src="meme2" alt="Meme 2" @click="like">
+					</div>
+				</div>
+			</div>
+			<div class="columns is-centered" >
+				<div class="column has-text-centered">
+					<a class="button is-primary is-outlined" @click="get_two_memes">
+						Pass
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var myapp = new Vue({
+				// delimiters: ['[[', ']]'],
+				el: "#app",
+				created() {
+					this.get_two_memes();
+				},
+				data : {
+					meme1 : "",
+					meme2 : ""
+				},
+				methods : {
+					get_two_memes() {
+						axios.get('{% url "get_two_memes" %}').then(response=>{
+							this.meme1 = response.data["meme_urls"][0];
+							this.meme2 = response.data["meme_urls"][1];
+						});
+					},
+					check(){
+						console.log(this.meme1);
+						console.log(this.meme2);
+					},
+					like(event){
+						axios.get('{% url "like_meme" %}'+'?imgurl='+event.target.src.split('/').slice(4).join('/'));
+						this.get_two_memes();
+					}
+				}
+			});
+	</script>
+
 </body>
 </html>
