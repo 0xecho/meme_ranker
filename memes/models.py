@@ -31,7 +31,7 @@ class Likes(models.Model):
 	def get_likes_object(meme_1, meme_2):
 		# TODO: Check if meme_1 & meme_2 are of type meme
 		meme_1, meme_2 = min(meme_1,meme_2), max(meme_1,meme_2)
-		hash_string = f"{meme_1.id}{meme_2.id}"
+		hash_string = f"{meme_1.id}-{meme_2.id}"
 		_hash = hashlib.md5(hash_string.encode())
 		try:
 			_object = Likes.objects.get(hash=_hash.digest())
