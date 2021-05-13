@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import dotenv
+from dotenv import load_dotenv
 
 load_dotenv()
 

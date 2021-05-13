@@ -21,6 +21,9 @@ class Meme(models.Model):
 	def __gt__(self,other):
 		return self.id > other.id
 
+	def __hash__(self):
+		return super(Meme, self).__hash__()
+
 class Likes(models.Model):
 
 	hash = models.CharField(max_length=64)	
