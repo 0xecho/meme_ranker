@@ -9,7 +9,7 @@ import hashlib
 @total_ordering
 class Meme(models.Model):
 
-	image = models.FileField(upload_to="memes/%Y/%m/%d")
+	image = models.FileField(upload_to="memes_storage/%Y/%m/%d")
 	uploader = models.CharField(default="oxecho", max_length=200, blank=True)
 
 	def __str__(self):
