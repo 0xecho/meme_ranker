@@ -24,16 +24,18 @@ class Meme(models.Model):
 	def __hash__(self):
 		return super(Meme, self).__hash__()
 
-	def get_likes(self):
+	def get_score(self):
 		my_likes = Likes.objects.filter(models.Q(first_meme__id=self.id)|models.Q(second_meme__id=self.id))
-		print(my_likes)
-		print(self.first_meme)
+		score = 0
+		for like in my_likes:
+			score += (like.get_score(self.id))
+		return score
 
 class Likes(models.Model):
 
 	hash = models.CharField(max_length=64)
-	first_meme = models.OneToOneField(Meme, on_delete=models.CASCADE, related_name='first_meme')
-	second_meme = models.OneToOneField(Meme, on_delete=models.CASCADE, related_name='second_meme')
+	first_meme = models.ForeignKey(Meme, on_delete=models.CASCADE, related_name='first_meme')
+	second_meme = models.ForeignKey(Meme, on_delete=models.CASCADE, related_name='second_meme')
 	first_meme_likes = models.IntegerField(default=0)
 	second_meme_likes = models.IntegerField(default=0)
 
@@ -63,7 +65,14 @@ class Likes(models.Model):
 		return new_likes_obj
 
 	def get_likes(self):
-		return self.first_meme_likes, self.second_meme_likes, sum(self.first_meme_likes, self.second_meme_likes)
+		return self.first_meme_likes, self.second_meme_likes, self.first_meme_likes + self.second_meme_likes
 
+	def get_score(self, meme_id):
+		# TODO: Add tests here
+		fl, sl, tl = self.get_likes()
+		if meme_id == self.first_meme.id:
+			return fl/float(tl)
+		return sl/float(tl)
+		
 	def __str__(self):
 		return f"Likes data with hash {self.hash}"

@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.css">
+	<link rel="stylesheet" href="{% static 'css/divider.css' %}">
+	<script src="{% static 'js/custom.js' %}"></script>
+	<title>Meme-Ranker</title>
+</head>
+<body>
+	
+	<div class="section is-centered">
+		<div class="container has-text-centered">
+			<a href="{% url 'rank' %}" class="button is-primary is-outlined">Rank Memes</a>
+		</div>
+		<div class="is-divider"></div>
+		
+		<section class="section" >
+			<div class="columns is-centered">
+				<div class="column is-narrow" style="max-width: 45%;">
+					<table class="table is-centered" > 
+						{% for meme in page_obj %}
+						<tr>
+							<td>
+							<div class="content">
+								<div class="title is-4">
+									<div class="level">
+										<div class="level-left"><span> Rank: <span class="title is-3">{{forloop.counter}}</span></span></div>
+										<div class="level-right"><span> {{meme.score|floatformat}}</span></div>
+									</div>
+								</div> 
+							</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="columns is-centered">
+									<div class="column is-flex is-horizontal-center">
+										<figure>
+											<img src="{{ meme.image.url }}">
+										</figure>   
+									</div>
+								</div>
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+				</div>  
+			</div>
+		</section>
+
+		<div class="columns is-centered">
+			<div class="column is-flex is-horizontal-center">
+				<nav class="pagination is-centered" role="navigation" aria-label="pagination" style="max-width: 45%;">
+				  {% if page_obj.has_previous %}
+				  	<a class="button pagination-previous is-outlined is-primary" href="?page=1">First Page</a>
+				  	<a class="button pagination-previous is-outlined is-primary" href="?page={{ page_obj.previous_page_number }}">Prev Page</a>
+				  {% endif %}
+				  {% if page_obj.has_next %}
+				  	<a class="button pagination-next is-outlined is-primary" href="?page={{ page_obj.next_page_number }}">Next page</a>
+				    <a class="button pagination-next is-outlined is-primary" href="?page={{ page_obj.paginator.num_pages }}">Last page</a>
+				  {% endif %}
+				  <ul class="pagination-list">
+				    <li><a class="button pagination-link is-current is-primary" aria-label="Page {{ page_obj.number }}" aria-current="page" disabled>{{ page_obj.number }}</a></li>
+
+				  </ul>
+				</nav> 
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

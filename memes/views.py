@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import TemplateView, ListView
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
@@ -11,8 +11,16 @@ import json
 class RankMemesView(TemplateView):
 	template_name = "rank.html"
 
-class TopMemesView(DetailView):
+class TopMemesView(ListView):
 	model = Meme
+	paginate_by = 10
+	template_name = "top.html"
+
+	def get_queryset(self):
+		queryset = super().get_queryset()
+		for obj in queryset:
+			obj.score = obj.get_score()
+		return sorted(queryset, key=lambda x:-x.score)
 
 @require_http_methods(['GET'])
 def get_two_memes(request):
@@ -34,10 +42,10 @@ def get_two_memes(request):
 		"meme_urls": [meme_1.image.url, meme_2.image.url]
 	}
 
+	print(meme_1.get_score())
+
 	request.session["first"] = meme_1_id
 	request.session["second"] = meme_2_id
-
-	print(meme_1)
 
 	return JsonResponse(data=respose_data)
 
@@ -45,7 +53,7 @@ def get_two_memes(request):
 def like_meme(request):
 	request_data = json.loads(request.body.decode())
 	choice = str(request_data.get('choice', None))
-	print(choice)
+	
 	if not choice or choice not in ['1','2']:
 		return JsonResponse(data={"message":"Internal Error"}, status=500)
 

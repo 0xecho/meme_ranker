@@ -1,0 +1,7 @@
+.img_holder {
+    height: 100%;
+}
+
+.is-horizontal-center {
+  justify-content: center;
+}
