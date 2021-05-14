@@ -24,13 +24,13 @@
 			<div class="columns is-centered has-text-centered">
 				<div class="column is-4">
 					<div class="img_holder">
-						<img v-bind:src="meme1" alt="Meme 1" @click="like">
+						<img v-bind:src="meme1" alt="Meme 1" @click="like(1)">
 					</div>
 				</div>
 				<div class="is-divider-vertical" data-content="Vs."></div>
 				<div class="column is-4">
 					<div class="img_holder">
-						<img v-bind:src="meme2" alt="Meme 2" @click="like">
+						<img v-bind:src="meme2" alt="Meme 2" @click="like(2)">
 					</div>
 				</div>
 			</div>
@@ -65,8 +65,8 @@
 						console.log(this.meme1);
 						console.log(this.meme2);
 					},
-					like(event){
-						axios.get('{% url "like_meme" %}'+'?imgurl='+event.target.src.split('/').slice(4).join('/'));
+					like(choice){
+						axios.post('{% url "like_meme" %}',{'choice':choice}, {headers:{'X-CSRFToken':'{{ csrf_token }}'}});
 						this.get_two_memes();
 					}
 				}
