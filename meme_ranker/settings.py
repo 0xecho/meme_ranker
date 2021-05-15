@@ -28,7 +28,9 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv("DEBUG")=="True" else False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+        os.getenv("ALLOWED_HOST")
+    ]
 
 
 # Application definition
@@ -40,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_telegram_login',
 
     'memes',
 ]
@@ -131,3 +135,7 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Media')
 MEDIA_URL = '/media/'
+
+TELEGRAM_BOT_NAME = os.getenv('TELEGRAM_BOT_NAME')
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+TELEGRAM_LOGIN_REDIRECT_URL = os.getenv('TELEGRAM_LOGIN_REDIRECT_URL')
