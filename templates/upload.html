@@ -4,7 +4,7 @@
 	<title>Upload Page</title>
 </head>
 <body>
-	<form method="post" enctype="multipart/form-data">
+	<form method="post" enctype="multipart/form-data" multiple>
 		{% csrf_token %}
 		{{ form }}
 		<input type="submit" name="Submit">

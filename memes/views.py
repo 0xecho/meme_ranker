@@ -3,8 +3,12 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 from .models import Meme, Likes
+from .forms import MemeUploadForm
+
 from random import choice
 import json
 # Create your views here.
@@ -23,11 +27,18 @@ class TopMemesView(ListView):
 			obj.score = obj.get_score()
 		return sorted(queryset, key=lambda x:-x.score)
 
+@method_decorator(login_required(login_url="signin"), name='dispatch')
 class UploadMemesView(CreateView):
-	model = Meme
-	fields = ('image', )
+	form_class = MemeUploadForm
 	template_name = "upload.html"
 	success_url = reverse_lazy("rank")
+
+	def form_valid(self, form):
+		form.save(commit=False)
+		if self.request.FILES:
+			for f in self.request.FILES.getlist('image'):
+				Meme.objects.create(image=f,uploader=self.request.user)
+		return super().form_valid(form)
 
 @require_http_methods(['GET'])
 def get_two_memes(request):

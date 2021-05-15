@@ -18,7 +18,7 @@
 	<div id='app'>
 		<div class="section">
 			<div class="container has-text-centered">
-				<a href="{% url 'top' %}" class="button is-primary is-outlined">Top Memes</a>
+				<a href="{% url 'top' %}">Top Memes</a>
 			</div>
 			<div class="is-divider"></div>
 			<div class="columns is-centered has-text-centered">
@@ -36,7 +36,7 @@
 			</div>
 			<div class="columns is-centered" >
 				<div class="column has-text-centered">
-					<a class="button is-primary is-outlined" @click="get_two_memes">
+					<a @click="get_two_memes">
 						Pass
 					</a>
 				</div>

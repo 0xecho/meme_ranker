@@ -15,7 +15,8 @@
 	
 	<div class="section is-centered">
 		<div class="container has-text-centered">
-			<a href="{% url 'rank' %}" class="button is-primary is-outlined">Rank Memes</a>
+			<a href="{% url 'rank' %}">Rank Memes</a>
+			<a href="{% url 'profile' %}">Profile</a>
 		</div>
 		<div class="is-divider"></div>
 		
@@ -57,17 +58,16 @@
 			<div class="column is-flex is-horizontal-center">
 				<nav class="pagination is-centered" role="navigation" aria-label="pagination" style="max-width: 45%;">
 				  {% if page_obj.has_previous %}
-				  	<a class="button pagination-previous is-outlined is-primary" href="?page=1">First Page</a>
-				  	<a class="button pagination-previous is-outlined is-primary" href="?page={{ page_obj.previous_page_number }}">Prev Page</a>
-				  {% endif %}
-				  {% if page_obj.has_next %}
-				  	<a class="button pagination-next is-outlined is-primary" href="?page={{ page_obj.next_page_number }}">Next page</a>
-				    <a class="button pagination-next is-outlined is-primary" href="?page={{ page_obj.paginator.num_pages }}">Last page</a>
+				  	<a href="?page=1">First Page </a>
+				  	<a href="?page={{ page_obj.previous_page_number }}">Prev Page</a>
 				  {% endif %}
 				  <ul class="pagination-list">
-				    <li><a class="button pagination-link is-current is-primary" aria-label="Page {{ page_obj.number }}" aria-current="page" disabled>{{ page_obj.number }}</a></li>
-
+				    <li><a aria-label="Page {{ page_obj.number }}" aria-current="page" disabled>{{ page_obj.number }}</a></li>
 				  </ul>
+				  {% if page_obj.has_next %}
+				  	<a href="?page={{ page_obj.next_page_number }}">Next page</a>
+				    <a href="?page={{ page_obj.paginator.num_pages }}">Last page</a>
+				  {% endif %}
 				</nav> 
 			</div>
 		</div>

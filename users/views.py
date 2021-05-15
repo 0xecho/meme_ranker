@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.conf import settings
 from django.views.generic import TemplateView, CreateView, UpdateView
-from django.contrib.auth import login, logout
+from django.contrib.auth import login
+from django.contrib.auth import logout as _logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -95,8 +96,8 @@ class SignupPageView(CreateView):
         self.object.telegram_name = self.request.session.get('tg_username')
         self.object.save()
 
-        del request.session['id']
-        del request.session['tg_username']
+        del self.request.session['id']
+        del self.request.session['tg_username']
 
         return ret
 
@@ -139,3 +140,9 @@ class EditProfilePageView(UpdateView):
 
     def get_object(self):
         return self.request.user
+
+def logout(request):
+    _logout(request)
+    return redirect("rank")
+
+# TODO: BugFix:unauthenticated users not redireted to signin page

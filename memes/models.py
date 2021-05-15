@@ -10,7 +10,7 @@ import hashlib
 class Meme(models.Model):
 
     image = models.ImageField(upload_to="memes_storage/%Y/%m/%d")
-    uploader = models.CharField(default="oxecho", max_length=200, blank=True)
+    uploader = models.ForeignKey('users.User', on_delete=models.CASCADE)
     image_hash = models.CharField(max_length=200)
 
     def __str__(self):
