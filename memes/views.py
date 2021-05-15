@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
@@ -24,7 +25,9 @@ class TopMemesView(ListView):
 
 class UploadMemesView(CreateView):
 	model = Meme
+	fields = ('image', )
 	template_name = "upload.html"
+	success_url = reverse_lazy("rank")
 
 @require_http_methods(['GET'])
 def get_two_memes(request):

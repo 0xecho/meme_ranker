@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.conf import settings
-from django.views.generic import TemplateView, CreateView, FormView
+from django.views.generic import TemplateView, CreateView, UpdateView
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -113,7 +113,7 @@ class ProfilePageView(TemplateView):
         return kwargs
 
 @method_decorator(login_required(login_url="signin"), name='dispatch')
-class EditProfilePageView(FormView):
+class EditProfilePageView(UpdateView):
     template_name = "users/edit_profile.html"
     form_class = UserForm
     success_url = reverse_lazy("profile")
@@ -137,8 +137,5 @@ class EditProfilePageView(FormView):
 
         return super().get_initial()
 
-    def form_valid(self, form):
-        obj = form.save()
-        print(obj)
-        return super().form_valid(form)
-        
+    def get_object(self):
+        return self.request.user

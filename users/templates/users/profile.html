@@ -22,9 +22,7 @@
 		<br>
 		About: {{object.about}}
 		<br>
-		Username: {{object.username}}
-		<br>
-		Username: {{object.username}}
+		Profile: <img src="{{ object.profile_picture.url }}">
 		<br>
 		<a href="{% url 'edit_profile' %}">Edit Profile</a>
 	</div>
