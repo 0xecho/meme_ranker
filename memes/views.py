@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, CreateView
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
@@ -21,6 +21,10 @@ class TopMemesView(ListView):
 		for obj in queryset:
 			obj.score = obj.get_score()
 		return sorted(queryset, key=lambda x:-x.score)
+
+class UploadMemesView(CreateView):
+	model = Meme
+	template_name = "upload.html"
 
 @require_http_methods(['GET'])
 def get_two_memes(request):
