@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django_telegram_login',
 
     'memes',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -64,7 +65,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, "templates")
+            os.path.join(BASE_DIR, "templates"),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -139,3 +140,5 @@ MEDIA_URL = '/media/'
 TELEGRAM_BOT_NAME = os.getenv('TELEGRAM_BOT_NAME')
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 TELEGRAM_LOGIN_REDIRECT_URL = os.getenv('TELEGRAM_LOGIN_REDIRECT_URL')
+
+AUTH_USER_MODEL = 'users.User'
