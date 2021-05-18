@@ -1,25 +1,6 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link rel="stylesheet" href="{% static 'css/style.css' %}">
-	<link rel="stylesheet" href="{% static 'css/bulma.css' %}">
-	<link rel="stylesheet" href="{% static 'css/divider.css' %}">
-	<script src="{% static 'js/custom.js' %}"></script>
-	<title>Meme-Ranker</title>
-</head>
-<body>
-	
-	<div class="section is-centered">
-		<div class="container has-text-centered">
-			<a href="{% url 'rank' %}">Rank Memes</a>
-			<a href="{% url 'profile' %}">Profile</a>
-		</div>
-		<div class="is-divider"></div>
-		
+{% extends 'base.html' %}
+{% block body %}
+	<div class="section is-centered">		
 		<section class="section" >
 			<div class="columns is-centered">
 				<div class="column is-narrow" style="max-width: 45%;">
@@ -30,7 +11,7 @@
 							<div class="content">
 								<div class="title is-4">
 									<div class="level">
-										<div class="level-left"><span> Rank: <span class="title is-3">{{forloop.counter}}</span></span></div>
+										<div class="level-left"><span> Rank: {{ meme.rank }} <span class="title is-3"></span></span></div>
 										<div class="level-right"><span> {{meme.score|floatformat}}</span></div>
 									</div>
 								</div> 
@@ -53,25 +34,22 @@
 				</div>  
 			</div>
 		</section>
-
 		<div class="columns is-centered">
 			<div class="column is-flex is-horizontal-center">
 				<nav class="pagination is-centered" role="navigation" aria-label="pagination" style="max-width: 45%;">
 				  {% if page_obj.has_previous %}
-				  	<a href="?page=1">First Page </a>
-				  	<a href="?page={{ page_obj.previous_page_number }}">Prev Page</a>
+				  	<a class="pagination-previous" href="?page=1">First Page </a>
+				  	<a class="pagination-previous" href="?page={{ page_obj.previous_page_number }}">Prev Page</a>
 				  {% endif %}
 				  <ul class="pagination-list">
-				    <li><a aria-label="Page {{ page_obj.number }}" aria-current="page" disabled>{{ page_obj.number }}</a></li>
+				    <li><a class="pagination-link" aria-label="Page {{ page_obj.number }}" aria-current="page" disabled>{{ page_obj.number }}</a></li>
 				  </ul>
 				  {% if page_obj.has_next %}
-				  	<a href="?page={{ page_obj.next_page_number }}">Next page</a>
-				    <a href="?page={{ page_obj.paginator.num_pages }}">Last page</a>
+				  	<a class="pagination-next" href="?page={{ page_obj.next_page_number }}">Next page</a>
+				    <a class="pagination-next" href="?page={{ page_obj.paginator.num_pages }}">Last page</a>
 				  {% endif %}
 				</nav> 
 			</div>
 		</div>
 	</div>
-
-</body>
-</html>
+{% endblock %}

@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Create an account</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block body %}
+<div class="container">
 	<form method="post" enctype="multipart/form-data">
 		{% csrf_token %}
 		{{form}}
 		<input type="submit" name="Submit">
 	</form>
-</body>
-</html>
+</div>
+{% endblock %}

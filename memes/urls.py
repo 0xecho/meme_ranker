@@ -1,7 +1,8 @@
 from django.urls import path, include
-from .views import RankMemesView, TopMemesView, UploadMemesView, get_two_memes, like_meme, ApprovalView
+from .views import RankMemesView, TopMemesView, UploadMemesView, get_two_memes, like_meme, ApprovalView, HomePageView
 
 urlpatterns = [
+    path('',HomePageView.as_view(), name='home'),
     path('rank/',RankMemesView.as_view(), name='rank'),
     path('approve/',ApprovalView.as_view(), name='approve'),
     path('top/',TopMemesView.as_view(), name='top'),

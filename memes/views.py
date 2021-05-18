@@ -13,9 +13,14 @@ from random import choice
 import json
 # Create your views here.
 
+class HomePageView(TemplateView):
+	template_name = "home.html"
+
+@method_decorator(login_required(login_url="signin"), name='dispatch')
 class RankMemesView(TemplateView):
 	template_name = "rank.html"
 
+@method_decorator(login_required(login_url="signin"), name='dispatch')
 class TopMemesView(ListView):
 	model = Meme
 	paginate_by = 10
@@ -25,7 +30,12 @@ class TopMemesView(ListView):
 		queryset = super().get_queryset()
 		for obj in queryset:
 			obj.score = obj.get_score()
-		return sorted(queryset, key=lambda x:-x.score)
+		all_memes = sorted(queryset, key=lambda x:-x.score)
+		rank = 1
+		for meme in all_memes:
+			meme.rank = rank 
+			rank += 1
+		return all_memes
 
 @method_decorator(login_required(login_url="signin"), name='dispatch')
 class UploadMemesView(CreateView):
@@ -67,6 +77,7 @@ def get_two_memes(request):
 	return JsonResponse(data=respose_data)
 
 @require_http_methods(['POST'])
+@login_required(login_url="signin")
 def like_meme(request):
 	request_data = json.loads(request.body.decode())
 	choice = str(request_data.get('choice', None))
