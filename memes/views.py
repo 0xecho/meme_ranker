@@ -42,8 +42,7 @@ class UploadMemesView(CreateView):
 
 @require_http_methods(['GET'])
 def get_two_memes(request):
-	meme_ids = Meme.objects.values_list('id', flat=True)
-
+	meme_ids = Meme.objects.filter(approval='approved').values_list('id', flat=True)
 	if len(meme_ids)<2:
 		return JsonResponse(data={"message":"Internal Error"}, status=500)
 
@@ -94,3 +93,11 @@ def like_meme(request):
 
 	return JsonResponse(data={"message":"OK"})
 
+@method_decorator(login_required(login_url="signin"), name='dispatch')
+class ApprovalView(ListView):
+	model = Meme
+	template_name = "approval.html"		
+	paginate_by = 10
+	queryset = Meme.objects.filter(approval='queued')
+
+	

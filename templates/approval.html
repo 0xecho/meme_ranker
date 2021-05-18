@@ -1,8 +1,6 @@
-{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -14,17 +12,11 @@
 	<title>Meme-Ranker</title>
 </head>
 <body>
-	<div class="container">
-		<h1>MY PROFILE</h1>
-		Username: {{object.username}}
-		<br>
-		Name: {{object.first_name}} {{object.last_name}}
-		<br>
-		About: {{object.about}}
-		<br>
-		Profile: <img src="{{ object.image_url }}">
-		<br>
-		<a href="{% url 'edit_profile' %}">Edit Profile</a>
-	</div>
+	{% for meme in page_obj %}
+		{{ meme }}
+		<img src="{{ meme.image.url }}">
+		<button>Approve</button>
+		<button>Decline</button>
+	{% endfor %}
 </body>
 </html>

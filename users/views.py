@@ -99,9 +99,11 @@ class SignupPageView(CreateView):
         del self.request.session['id']
         del self.request.session['tg_username']
 
+        login(request, self.object)
+
         return ret
 
-@method_decorator(login_required(login_url="signin"), name='dispatch')
+@method_decorator(login_required(login_url=reverse_lazy("signin")), name='dispatch')
 class ProfilePageView(TemplateView):
     template_name = "users/profile.html"
 
@@ -144,5 +146,3 @@ class EditProfilePageView(UpdateView):
 def logout(request):
     _logout(request)
     return redirect("rank")
-
-# TODO: BugFix:unauthenticated users not redireted to signin page

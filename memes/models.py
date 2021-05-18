@@ -6,12 +6,20 @@ import hashlib
 
 # Create your models here.
 
+APPROVAL_CHOICES = [
+    ('approved', 'Approved'),
+    ('queued', 'Awaiting Approval'),
+    ('declined', 'Declined'),
+]
+
 @total_ordering
 class Meme(models.Model):
 
     image = models.ImageField(upload_to="memes_storage/%Y/%m/%d")
     uploader = models.ForeignKey('users.User', on_delete=models.CASCADE)
     image_hash = models.CharField(max_length=200)
+    upload_date = models.DateTimeField(auto_now_add=True)
+    approval = models.CharField(choices=APPROVAL_CHOICES, max_length=50, default='queued')
 
     def __str__(self):
         return f"Meme #{self.id}: by {self.uploader}"
@@ -46,10 +54,11 @@ class Meme(models.Model):
 
     def save(self, **kwargs):
         image_hash = self.get_hash()
-        # TODO: Remove duplicate values iin db  now
-        if not Meme.objects.filter(image_hash=image_hash):
+        if not self.pk:
+            if Meme.objects.filter(image_hash=image_hash):
+                return
             self.image_hash = image_hash
-            super().save(**kwargs)
+        super().save(**kwargs)
 
 class Likes(models.Model):
 
