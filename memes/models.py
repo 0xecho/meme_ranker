@@ -3,6 +3,9 @@ from django.shortcuts import get_object_or_404
 
 from functools import total_ordering
 import hashlib
+import os
+import datetime
+import uuid
 
 # Create your models here.
 
@@ -12,10 +15,16 @@ APPROVAL_CHOICES = [
     ('declined', 'Declined'),
 ]
 
+def get_file_upload_path(instance, filename):
+    ext = filename.split('.')[-1]
+    dir_with_date = datetime.datetime.today().strftime("memes_storage/%Y/%m/%d")
+    path = os.path.join(dir_with_date, f"{str(uuid.uuid4())}.{ext}")
+    return path
+
 @total_ordering
 class Meme(models.Model):
 
-    image = models.ImageField(upload_to="memes_storage/%Y/%m/%d")
+    image = models.ImageField(upload_to=get_file_upload_path)
     uploader = models.ForeignKey('users.User', on_delete=models.CASCADE)
     image_hash = models.CharField(max_length=200)
     upload_date = models.DateTimeField(auto_now_add=True)
