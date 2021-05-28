@@ -52,7 +52,7 @@ class UploadMemesView(CreateView):
 
 @require_http_methods(['GET'])
 def get_two_memes(request):
-	meme_ids = Meme.objects.filter(approval='approved').values_list('id', flat=True)
+	meme_ids = Meme.objects.all().values_list('id', flat=True)
 	if len(meme_ids)<2:
 		return JsonResponse(data={"message":"Internal Error"}, status=500)
 
