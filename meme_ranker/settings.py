@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-load_dotenv(os.path.join(BASE_DIR, '.env'))
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -129,13 +129,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = os.getenv("STATIC_URL", '/static/')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+STATIC_ROOT = os.getenv("STATIC_ROOT")
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'Media')
-MEDIA_URL = '/media/'
+MEDIA_ROOT = os.getenv("MEDIA_ROOT", "Media")
+MEDIA_URL = os.getenv("MEDIA_URL", '/media/')
 
 TELEGRAM_BOT_NAME = os.getenv('TELEGRAM_BOT_NAME')
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
